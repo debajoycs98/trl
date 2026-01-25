@@ -14,6 +14,7 @@
 
 from .online_dpo_config import OnlineDPOConfig
 from .online_dpo_trainer import OnlineDPOTrainer
+from .online_dpo_trainer_summ import OnlineDPOTrainerSumm
 
 
-__all__ = ["OnlineDPOConfig", "OnlineDPOTrainer"]
+__all__ = ["OnlineDPOConfig", "OnlineDPOTrainer", "OnlineDPOTrainerSumm"]

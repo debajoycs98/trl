@@ -12,7 +12,7 @@ from transformers import (
     HfArgumentParser,
 )
 import wandb
-from trl.experimental.online_dpo import OnlineDPOConfig, OnlineDPOTrainer
+from trl.experimental.online_dpo import OnlineDPOConfig, OnlineDPOTrainer, OnlineDPOTrainerSumm
 from multi_reward_models import RewardModels
 import torch
 #callbacks
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     
     model.generation_config.max_new_tokens = 128 if script_args.exp_type == "assistant" else 48
     model.generation_config.temperature = 1.0
-    model.generation_config.top_k = 15
+    model.generation_config.top_k = 40
     model.generation_config.top_p = 1.0
     model.generation_config.do_sample = True
     model.generation_config.begin_suppress_tokens = [tokenizer.eos_token_id]
@@ -202,7 +202,9 @@ if __name__ == "__main__":
         temperature=training_args.temperature
     )
 
-    trainer = OnlineDPOTrainer(
+    trainer_cls = OnlineDPOTrainerSumm if script_args.exp_type == "summary" else OnlineDPOTrainer
+
+    trainer = trainer_cls(
         model=model,
         ref_model=None,
         reward_funcs=reward_funcs,
